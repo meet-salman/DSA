@@ -60,8 +60,25 @@ The binary search algorithm follows **divide and conquer**:
 **Input (hardcoded in program):**
 ```cpp
 vector<int> vec = {5, 6, 7, 8, 9, 10, 11, 12, 13};
-int target = 5;
+int target = 7;
 ```
 **Output:**
+`2`
 
-    0
+```cpp
+target = 3;
+```
+**Output:**
+`-1`
+
+```cpp
+target = 13;
+```
+**Output:**
+`8`
+
+```cpp
+target = 15;
+```
+**Output:**
+`-1`
