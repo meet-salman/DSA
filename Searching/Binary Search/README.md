@@ -65,20 +65,14 @@ int target = 7;
 **Output:**
 `2`
 
-```cpp
-target = 3;
-```
+    target = 3;
 **Output:**
 `-1`
 
-```cpp
-target = 13;
-```
+    target = 13;
 **Output:**
 `8`
 
-```cpp
-target = 15;
-```
+    target = 15;
 **Output:**
 `-1`
