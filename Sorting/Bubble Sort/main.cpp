@@ -12,7 +12,7 @@ int main()
     vector<int> vec = {5, 8, 1, 7, 2, 9, 4, 6, 0, 3};
     int size = vec.size();
 
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size - 1; i++)
     {
         bool didSwap = false;
         for (int j = 0; j < size - i - 1; j++)
