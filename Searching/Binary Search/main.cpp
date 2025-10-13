@@ -7,31 +7,28 @@ void print(const T &val)
     cout << val << "\n";
 }
 
-int bnary_search(vector<int> &vec, int start, int end, int target)
-{
-
-    if (start > end)
-        return -1;
-
-    int midPoint = start + ((end - start) / 2);
-
-    if (vec[midPoint] == target)
-        return midPoint;
-
-    if (target > vec[midPoint])
-        return bnary_search(vec, midPoint + 1, end, target);
-    else
-        return bnary_search(vec, start, midPoint - 1, target);
-}
-
 int main()
 {
+    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    vector<int> vec = {5, 6, 7, 8, 9, 10, 11, 12, 13};
-    int target = 5;
+    int size = vec.size(), left = 0, right = size - 1, target = 33, idx = -1;
 
-    int idx = bnary_search(vec, 0, vec.size() - 1, target);
+    while (left <= right)
+    {
+        int midIdx = left + ((right - left) / 2);
+
+        if (vec[midIdx] == target)
+        {
+            idx = midIdx;
+            break;
+        }
+        else if (vec[midIdx] > target)
+            right = midIdx - 1;
+        else
+            left = midIdx + 1;
+    }
+
     print(idx);
 
     return 0;
-};
+}
