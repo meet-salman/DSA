@@ -3,7 +3,6 @@ using namespace std;
 
 int main()
 {
-
     vector<int> vec = {-5, -10, 2, -3, -7, 1};
 
     int minElem = *min_element(vec.begin(), vec.end());
