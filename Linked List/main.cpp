@@ -166,6 +166,26 @@ struct LinkedList
             delete temp;
         }
     }
+
+    // Update element by value
+    void update_by_value(string toEdit, string editedValue)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                if (current->value == toEdit)
+                {
+                    current->value = editedValue;
+                    break;
+                }
+                current = current->next;
+            }
+        }
+    }
 };
 
 main()
