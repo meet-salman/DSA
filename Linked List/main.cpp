@@ -186,6 +186,27 @@ struct LinkedList
             }
         }
     }
+
+    // Search element by value
+    void search_by_value(string val)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                if (current->value == val)
+                {
+                    cout << "Found" << endl;
+                    return;
+                }
+                current = current->next;
+            }
+            cout << "Not Found" << endl;
+        }
+    }
 };
 
 main()
