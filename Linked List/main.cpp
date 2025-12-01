@@ -14,6 +14,20 @@ struct LinkedList
 {
     Node *head = nullptr,
          *tail = nullptr;
+
+    void push_back(string val)
+    {
+        Node *n = new Node(val);
+        if (!head)
+            head = tail = n;
+        else
+        {
+            n->previous = tail;
+            tail->next = n;
+            tail = n;
+            // tail->next = head;   // circular
+        }
+    }
 };
 
 main()
