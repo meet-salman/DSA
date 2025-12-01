@@ -96,6 +96,20 @@ struct LinkedList
             }
         }
     }
+
+    // Element added at first
+    void push_front(string val)
+    {
+        Node *n = new Node(val);
+        if (!head)
+            head = tail = n;
+        else
+        {
+            n->next = head;
+            head->previous = n;
+            head = n;
+        }
+    }
 };
 
 main()
