@@ -110,6 +110,20 @@ struct LinkedList
             head = n;
         }
     }
+
+    // Element remove from last
+    void pop_back()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *temp = tail;
+            tail = tail->previous;
+            tail->next = nullptr;
+            delete temp;
+        }
+    }
 };
 
 main()
