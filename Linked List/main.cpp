@@ -64,6 +64,8 @@ struct LinkedList
         Node *n = new Node(val);
         if (!head)
             cout << "List is empty!" << endl;
+        else if (position < 1)
+            cout << "Invalid Position!" << endl;
         else
         {
             Node *current = head;
@@ -73,20 +75,20 @@ struct LinkedList
                 if (position == idx && current->previous == nullptr)
                 {
                     push_front(val);
-                    break;
+                    return;
                 }
                 else if (position == idx && current->next == nullptr)
                 {
                     push_back(val);
-                    break;
+                    return;
                 }
                 else if (position == idx)
                 {
-                    n->next = current->next;
-                    current->next->previous = n;
-                    current->next = n;
-                    n->previous = current;
-                    break;
+                    n->previous = current->previous;
+                    n->next = current;
+                    current->previous->next = n;
+                    current->previous = n;
+                    return;
                 }
                 else
                 {
@@ -94,6 +96,7 @@ struct LinkedList
                     current = current->next;
                 }
             }
+            cout << "Invalid Position!" << endl;
         }
     }
 
@@ -252,7 +255,7 @@ struct LinkedList
             Node *current = head;
             while (current)
             {
-                cout << current->value << endl;
+                cout << current->value << " ";
                 current = current->next;
             }
         }
@@ -268,7 +271,7 @@ struct LinkedList
             Node *current = tail;
             while (current)
             {
-                cout << current->value << endl;
+                cout << current->value << " ";
                 current = current->previous;
             }
         }
@@ -290,8 +293,6 @@ main()
 
     l1.display_list();
     cout << endl;
-
-    l1.pop_at_position(0);
 
     l1.display_list();
     cout << endl;
