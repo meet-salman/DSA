@@ -304,7 +304,7 @@ struct LinkedList
             Node *current = head;
             while (current)
             {
-                cout << current->value << endl;
+                cout << current->value << " ";
                 current = current->next;
             }
         }
@@ -320,8 +320,31 @@ struct LinkedList
             Node *current = tail;
             while (current)
             {
-                cout << current->value << endl;
+                cout << current->value << " ";
                 current = current->previous;
+            }
+        }
+    }
+
+    // Display in range (x - x)
+    void display_in_range(int start, int end)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            int idx = 1;
+
+            if (start < 1)
+                start = 1;
+            while (current)
+            {
+                if (idx >= start && idx <= end)
+                    cout << current->value << " ";
+
+                idx++;
+                current = current->next;
             }
         }
     }
@@ -339,6 +362,8 @@ main()
     l1.push_back("6");
     l1.push_back("7");
     l1.push_back("8");
+    l1.push_back("9");
+    l1.push_back("10");
 
     l1.display_list();
     cout << endl;
