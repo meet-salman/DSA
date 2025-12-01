@@ -149,8 +149,42 @@ struct LinkedList
         }
     }
 
-    void pop_at_position(int position, string val)
+    // Element remove at position (1 - x)
+    void pop_at_position(int position)
     {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else if (position < 1)
+            cout << "Invalid Position!" << endl;
+        else
+        {
+            Node *current = head;
+            int idx = 1;
+            while (current)
+            {
+                if (idx == position && current->previous == nullptr)
+                {
+                    pop_front();
+                    return;
+                }
+                else if (idx == position && current->next == nullptr)
+                {
+                    pop_back();
+                    return;
+                }
+                if (idx == position)
+                {
+                    current->previous->next = current->next;
+                    return;
+                }
+                else
+                {
+                    idx++;
+                    current = current->next;
+                }
+            }
+            cout << "Invalid Position!" << endl;
+        }
     }
 
     // Element remove at first
@@ -245,6 +279,22 @@ main()
 {
 
     LinkedList l1;
+    l1.push_back("1");
+    l1.push_back("2");
+    l1.push_back("3");
+    l1.push_back("4");
+    l1.push_back("5");
+    l1.push_back("6");
+    l1.push_back("7");
+    l1.push_back("8");
+
+    l1.display_list();
+    cout << endl;
+
+    l1.pop_at_position(0);
+
+    l1.display_list();
+    cout << endl;
 
     return 0;
 }
