@@ -266,6 +266,34 @@ struct LinkedList
         }
     }
 
+    // Search element at position
+    void search_at_position(int position)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else if (position < 1)
+            cout << "Invalid Position!" << endl;
+        else
+        {
+            Node *current = head;
+            int idx = 1;
+            while (current)
+            {
+                if (idx == position)
+                {
+                    cout << current->value << endl;
+                    return;
+                }
+                else
+                {
+                    idx++;
+                    current = current->next;
+                }
+            }
+            cout << "Invalid Position!" << endl;
+        }
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -315,9 +343,7 @@ main()
     l1.display_list();
     cout << endl;
 
-    l1.update_at_position(4, "Salman");
-
-    l1.display_list();
+    // l1.display_list();
     cout << endl;
 
     return 0;
