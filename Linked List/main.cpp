@@ -221,6 +221,30 @@ struct LinkedList
         }
     }
 
+    // Update element at position (1 - x)
+    void update_at_position(int position, string editedValue)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else if (position < 1)
+            cout << "Invalid Position!" << endl;
+        else
+        {
+            Node *current = head;
+            int idx = 1;
+            while (current)
+            {
+                if (idx == position)
+                {
+                    current->value = editedValue;
+                    return;
+                }
+                current = current->next;
+            }
+            cout << "Invalid Position!" << endl;
+        }
+    }
+
     // Search element by value
     void search_by_value(string val)
     {
@@ -291,7 +315,7 @@ main()
     l1.display_list();
     cout << endl;
 
-    l1.pop_at_position(0);
+    l1.update_at_position(4, "Salman");
 
     l1.display_list();
     cout << endl;
