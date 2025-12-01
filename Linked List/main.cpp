@@ -207,6 +207,22 @@ struct LinkedList
             cout << "Not Found" << endl;
         }
     }
+
+    // Traverse & Display all items
+    void display_list()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                cout << current->value << endl;
+                current = current->next;
+            }
+        }
+    }
 };
 
 main()
