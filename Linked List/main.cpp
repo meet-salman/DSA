@@ -124,6 +124,30 @@ struct LinkedList
             delete temp;
         }
     }
+
+    // Element remove from middle by value
+    void pop_by_value(string val)
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                if (current->value == val && current->previous == nullptr)
+                    pop_front();
+                else if (current->value == val && current->next == nullptr)
+                    pop_back();
+                else if (current->value == val)
+                {
+                    current->previous->next = current->next;
+                    break;
+                }
+                current = current->next;
+            }
+        }
+    }
 };
 
 main()
