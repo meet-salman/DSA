@@ -148,6 +148,24 @@ struct LinkedList
             }
         }
     }
+
+    void pop_at_position(int position, string val)
+    {
+    }
+
+    // Element remove at first
+    void pop_front()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *temp = head;
+            head = head->next;
+            head->previous = nullptr;
+            delete temp;
+        }
+    }
 };
 
 main()
