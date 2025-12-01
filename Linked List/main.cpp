@@ -223,6 +223,22 @@ struct LinkedList
             }
         }
     }
+
+    // Traverse in reverse & Display all items
+    void display_list_reverse()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = tail;
+            while (current)
+            {
+                cout << current->value << endl;
+                current = current->previous;
+            }
+        }
+    }
 };
 
 main()
