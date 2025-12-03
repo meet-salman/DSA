@@ -35,7 +35,7 @@ struct LinkedList
     {
         Node *n = new Node(val);
         if (!head)
-            cout << "List is empty!" << endl;
+            push_back(val);
         else
         {
             Node *current = head;
