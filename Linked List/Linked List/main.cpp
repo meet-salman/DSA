@@ -25,7 +25,7 @@ struct LinkedList
     {
         int count = 0;
         if (!head)
-            cout << "List is empty!" << endl;
+            return count;
         else
         {
             Node *current = head;
@@ -147,6 +147,12 @@ struct LinkedList
     {
         if (!head)
             cout << "List is empty!" << endl;
+        else if (!head->next) // head == tail
+        {
+            Node *toDlt = head;
+            head = tail = nullptr;
+            delete toDlt;
+        }
         else
         {
             Node *temp = tail;
@@ -420,7 +426,7 @@ main()
     l1.push_back("10");
 
     // l1.update_at_position(5, "s");
-    l1.pop_at_position(5);
+    // l1.pop_at_position(5);
     l1.display_list();
 
     l1.display_list_reverse();
