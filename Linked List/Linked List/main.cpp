@@ -215,21 +215,22 @@ struct LinkedList
     }
 
     // Find length of LL
-    void find_length()
+    int find_length()
     {
+        int count = 0;
         if (!head)
             cout << "List is empty!" << endl;
         else
         {
             Node *current = head;
-            int count = 0;
             do
             {
                 count++;
                 current = current->next;
             } while (current != head);
-            cout << "Length: " << count << endl;
+            // cout << "Length: " << count << endl;
         }
+        return count;
     }
 
     // Update element by value
@@ -305,11 +306,14 @@ struct LinkedList
     // Search element at position
     void search_at_position(int position)
     {
+        int length = find_length();
 
         if (!head)
-            cout << "List is empty!" << endl;
-        else if (position < 1)
-            cout << "Invalid Position!" << endl;
+            cout
+                << "List is empty!" << endl;
+        else if (position < 1 && position >= length)
+            cout
+                << "Invalid Position!" << endl;
         else
         {
             Node *current = head;
@@ -405,7 +409,7 @@ main()
     l1.display_list();
     cout << endl;
 
-    l1.find_length();
+    // l1.search_at_position(90);
     // l1.find_length();
     // l1.display_list();
     cout << endl;
