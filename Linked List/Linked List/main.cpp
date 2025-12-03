@@ -259,23 +259,28 @@ struct LinkedList
     }
 
     // Search element by value
-    void search_by_value(string val)
+    void search_by_value(string key)
     {
         if (!head)
             cout << "List is empty!" << endl;
         else
         {
             Node *current = head;
-            while (current)
+            int idx = 0;
+            do
             {
-                if (current->value == val)
+                if (current->value == key)
                 {
-                    cout << "Found" << endl;
+                    cout << idx << endl;
                     return;
                 }
-                current = current->next;
-            }
-            cout << "Not Found" << endl;
+                else
+                {
+                    idx++;
+                    current = current->next;
+                }
+            } while (current != head);
+            cout << -1 << endl;
         }
     }
 
@@ -289,8 +294,8 @@ struct LinkedList
         else
         {
             Node *current = head;
-            int idx = 1;
-            while (current)
+            int idx = 0;
+            do
             {
                 if (idx == position)
                 {
@@ -302,7 +307,7 @@ struct LinkedList
                     idx++;
                     current = current->next;
                 }
-            }
+            } while (current != head);
             cout << "Invalid Position!" << endl;
         }
     }
@@ -381,6 +386,7 @@ main()
     l1.display_list();
     cout << endl;
 
+    // l1.search_at_position(-4);
     // l1.find_length();
     // l1.display_list();
     cout << endl;
