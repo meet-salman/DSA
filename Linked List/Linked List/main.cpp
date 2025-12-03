@@ -315,11 +315,11 @@ struct LinkedList
         else
         {
             Node *current = head;
-            while (current)
+            do
             {
                 cout << current->value << " ";
                 current = current->next;
-            }
+            } while (current != head);
         }
     }
 
