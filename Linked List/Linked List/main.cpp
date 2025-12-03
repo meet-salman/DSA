@@ -131,7 +131,8 @@ struct LinkedList
         {
             Node *temp = tail;
             tail = tail->previous;
-            tail->next = nullptr;
+            tail->next = head;     // circular
+            head->previous = tail; // circular
             delete temp;
         }
     }
