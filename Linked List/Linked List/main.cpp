@@ -114,9 +114,11 @@ struct LinkedList
             head = tail = n;
         else
         {
+            n->previous = tail; // circular
             n->next = head;
             head->previous = n;
             head = n;
+            tail->next = head; // circular
         }
     }
 
