@@ -309,7 +309,6 @@ struct LinkedList
     }
 
     // Search element at position
-
     void search_at_position(int position)
     {
         int length = find_length();
@@ -377,24 +376,31 @@ struct LinkedList
     // Display in range (x - x)
     void display_in_range(int start, int end)
     {
+        int length = find_length();
+
         if (!head)
-            cout << "List is empty!" << endl;
-        else
         {
-            Node *current = head;
-            int idx = 1;
-
-            if (start < 1)
-                start = 1;
-            while (current)
-            {
-                if (idx >= start && idx <= end)
-                    cout << current->value << " ";
-
-                idx++;
-                current = current->next;
-            }
+            cout << "List is empty!" << endl;
+            return;
         }
+        if (start < 1)
+            start = 1;
+        if (end >= length)
+        {
+            cout << "Invalid Position!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        int idx = 0;
+        do
+        {
+            if (idx >= start && idx <= end)
+                cout << current->value << " ";
+
+            idx++;
+            current = current->next;
+        } while (current != head);
     }
 };
 
