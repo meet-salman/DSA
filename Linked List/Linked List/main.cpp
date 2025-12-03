@@ -147,7 +147,7 @@ struct LinkedList
     {
         if (!head)
             cout << "List is empty!" << endl;
-        else if (!head->next) // head == tail
+        else if (head == tail)
         {
             Node *toDlt = head;
             head = tail = nullptr;
@@ -415,21 +415,21 @@ main()
 
     LinkedList l1;
     l1.push_back("1");
-    l1.push_back("2");
-    l1.push_back("3");
-    l1.push_back("4");
-    l1.push_back("5");
-    l1.push_back("6");
-    l1.push_back("7");
-    l1.push_back("8");
-    l1.push_back("9");
-    l1.push_back("10");
+    // l1.push_back("2");
+    // l1.push_back("3");
+    // l1.push_back("4");
+    // l1.push_back("5");
+    // l1.push_back("6");
+    // l1.push_back("7");
+    // l1.push_back("8");
+    // l1.push_back("9");
+    // l1.push_back("10");
 
     // l1.update_at_position(5, "s");
     // l1.pop_at_position(5);
+    l1.pop_back();
     l1.display_list();
 
-    l1.display_list_reverse();
     cout << endl;
 
     // l1.find_length();
