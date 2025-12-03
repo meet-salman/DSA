@@ -20,6 +20,25 @@ struct LinkedList
         head = tail = nullptr;
     }
 
+    // Find length of LL
+    int find_length()
+    {
+        int count = 0;
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            do
+            {
+                count++;
+                current = current->next;
+            } while (current != head);
+            // cout << "Length: " << count << endl;
+        }
+        return count;
+    }
+
     //  Element added at last
     void push_back(string val)
     {
@@ -33,9 +52,10 @@ struct LinkedList
         else
         {
             n->previous = tail;
+            n->next = head; // circular
             tail->next = n;
             tail = n;
-            tail->next = head; // circular
+            head->previous = tail; // circular
         }
     }
 
@@ -164,15 +184,17 @@ struct LinkedList
     // Element remove at position (1 - x)
     void pop_at_position(int position)
     {
+        int length = find_length();
+
         if (!head)
             cout << "List is empty!" << endl;
-        else if (position < 1)
+        else if (position < 1 || position >= length)
             cout << "Invalid Position!" << endl;
         else
         {
             Node *current = head;
-            int idx = 1;
-            while (current)
+            int idx = 0;
+            do
             {
                 if (idx == position && current->previous == nullptr)
                 {
@@ -186,6 +208,7 @@ struct LinkedList
                 }
                 if (idx == position)
                 {
+                    current->next->previous = current->previous;
                     current->previous->next = current->next;
                     return;
                 }
@@ -194,8 +217,7 @@ struct LinkedList
                     idx++;
                     current = current->next;
                 }
-            }
-            cout << "Invalid Position!" << endl;
+            } while (current != head);
         }
     }
 
@@ -212,25 +234,6 @@ struct LinkedList
             tail->next = head;     // circular
             delete temp;
         }
-    }
-
-    // Find length of LL
-    int find_length()
-    {
-        int count = 0;
-        if (!head)
-            cout << "List is empty!" << endl;
-        else
-        {
-            Node *current = head;
-            do
-            {
-                count++;
-                current = current->next;
-            } while (current != head);
-            // cout << "Length: " << count << endl;
-        }
-        return count;
     }
 
     // Update element by value
@@ -306,6 +309,7 @@ struct LinkedList
     }
 
     // Search element at position
+
     void search_at_position(int position)
     {
         int length = find_length();
@@ -350,6 +354,7 @@ struct LinkedList
                 current = current->next;
             } while (current != head);
         }
+        cout << endl;
     }
 
     // Traverse in reverse & Display all items
@@ -360,12 +365,13 @@ struct LinkedList
         else
         {
             Node *current = tail;
-            while (current)
+            do
             {
                 cout << current->value << " ";
                 current = current->previous;
-            }
+            } while (current != tail);
         }
+        cout << endl;
     }
 
     // Display in range (x - x)
@@ -408,7 +414,10 @@ main()
     l1.push_back("10");
 
     // l1.update_at_position(5, "s");
+    l1.pop_at_position(5);
     l1.display_list();
+
+    l1.display_list_reverse();
     cout << endl;
 
     // l1.find_length();
