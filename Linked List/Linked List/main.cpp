@@ -256,24 +256,26 @@ struct LinkedList
     // Update element at position (1 - x)
     void update_at_position(int position, string editedValue)
     {
+        int length = find_length();
+
         if (!head)
             cout << "List is empty!" << endl;
-        else if (position < 1)
+        else if (position < 1 || position >= length)
             cout << "Invalid Position!" << endl;
         else
         {
             Node *current = head;
-            int idx = 1;
-            while (current)
+            int idx = 0;
+            do
             {
                 if (idx == position)
                 {
                     current->value = editedValue;
                     return;
                 }
+                idx++;
                 current = current->next;
-            }
-            cout << "Invalid Position!" << endl;
+            } while (current != head);
         }
     }
 
@@ -311,7 +313,7 @@ struct LinkedList
         if (!head)
             cout
                 << "List is empty!" << endl;
-        else if (position < 1 && position >= length)
+        else if (position < 1 || position >= length)
             cout
                 << "Invalid Position!" << endl;
         else
@@ -331,7 +333,6 @@ struct LinkedList
                     current = current->next;
                 }
             } while (current != head);
-            cout << "Invalid Position!" << endl;
         }
     }
 
@@ -406,10 +407,10 @@ main()
     l1.push_back("9");
     l1.push_back("10");
 
+    // l1.update_at_position(5, "s");
     l1.display_list();
     cout << endl;
 
-    // l1.search_at_position(90);
     // l1.find_length();
     // l1.display_list();
     cout << endl;
