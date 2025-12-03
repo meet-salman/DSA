@@ -208,7 +208,8 @@ struct LinkedList
         {
             Node *temp = head;
             head = head->next;
-            head->previous = nullptr;
+            head->previous = tail; // circular
+            tail->next = head;     // circular
             delete temp;
         }
     }
