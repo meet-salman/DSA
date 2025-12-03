@@ -12,21 +12,30 @@ struct Node
 
 struct LinkedList
 {
-    Node *head = nullptr,
-         *tail = nullptr;
+    Node *head, *tail;
+
+    // Constructor to initialize head & tail = Null
+    LinkedList()
+    {
+        head = tail = nullptr;
+    }
 
     //  Element added at last
     void push_back(string val)
     {
         Node *n = new Node(val);
         if (!head)
+        {
             head = tail = n;
+            head->previous = tail;
+            tail->next = head; // circular
+        }
         else
         {
             n->previous = tail;
             tail->next = n;
             tail = n;
-            // tail->next = head;   // circular
+            tail->next = head; // circular
         }
     }
 
@@ -368,6 +377,7 @@ main()
     l1.display_list();
     cout << endl;
 
+    // l1.find_length();
     // l1.display_list();
     cout << endl;
 
