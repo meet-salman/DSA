@@ -348,6 +348,38 @@ struct LinkedList
         }
         cout << endl;
     }
+
+    // Display in range (x - x)
+    void display_in_range(int start, int end)
+    {
+        int length = find_length();
+
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        if (start < 0)
+            start = 0;
+        if (end < start)
+        {
+            cout << "Invalid range!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        int idx = 0;
+
+        while (current)
+        {
+            if (idx >= start && idx <= end)
+                cout << current->value << " ";
+
+            idx++;
+            current = current->next;
+        }
+    }
 };
 
 main()
@@ -364,9 +396,9 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.search_at_position(5);
+    list.display_in_range(3, 8);
 
-    list.display_list();
+    // list.display_list();
 
     return 0;
 }
