@@ -43,6 +43,36 @@ struct LinkedList
         }
     }
 
+    // Element added at position (1 - x)
+    void push_at_position(int position, string val)
+    {
+        Node *n = new Node(val);
+
+        if (position == 0)
+        {
+            push_front(val);
+            return;
+        }
+
+        Node *current = head;
+        int idx = 0;
+        while (current && idx < position - 1)
+        {
+            idx++;
+            current = current->next;
+        }
+
+        if (!current || position < 0)
+        {
+            cout << "Invalid Position" << endl;
+            delete n;
+            return;
+        }
+
+        n->next = current->next;
+        current->next = n;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -64,16 +94,18 @@ struct LinkedList
 main()
 {
     LinkedList list;
-    list.push_front("1");
-    list.push_front("2");
-    list.push_front("3");
-    list.push_front("4");
-    list.push_front("5");
-    list.push_front("6");
-    list.push_front("7");
-    list.push_front("8");
-    list.push_front("9");
-    list.push_front("10");
+    list.push_back("1");
+    list.push_back("2");
+    list.push_back("3");
+    list.push_back("4");
+    // list.push_back("5");
+    list.push_back("6");
+    list.push_back("7");
+    list.push_back("8");
+    list.push_back("9");
+    list.push_back("10");
+
+    list.push_at_position(-1, "5");
 
     list.display_list();
 
