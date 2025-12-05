@@ -382,7 +382,7 @@ struct LinkedList
     }
 };
 
-main()
+int main()
 {
     LinkedList list;
     list.push_back("1");
