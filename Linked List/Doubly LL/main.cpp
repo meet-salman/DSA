@@ -46,6 +46,21 @@ struct LinkedList
         head->previous = n;
         head = n;
     }
+
+    // Element remove from last
+    void pop_back()
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *toDLt = tail;
+        tail = tail->previous;
+        tail->next = nullptr;
+        delete toDLt;
+    }
 };
 
 int main()
