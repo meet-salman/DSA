@@ -138,6 +138,52 @@ struct LinkedList
         delete toDlt;
     }
 
+    // Element remove at position (1 - x)
+    void pop_at_position(int position)
+    {
+        int len = find_length();
+
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        if (position < 0 || position >= len)
+        {
+            cout << "Invalid Position!" << endl;
+            return;
+        }
+
+        // pop_front() if starting position
+        if (position == 0)
+        {
+            pop_front();
+            return;
+        }
+
+        // pop_back() if last position
+        if (position == len - 1)
+        {
+            pop_back();
+            return;
+        }
+
+        Node *current = head;
+        Node *toDlt;
+        int idx = 0;
+
+        while (current && idx < position - 1)
+        {
+            idx++;
+            current = current->next;
+        }
+
+        toDlt = current->next;
+        current->next = toDlt->next;
+        delete toDlt;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -170,7 +216,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_front();
+    list.pop_at_position(5);
 
     list.display_list();
 
