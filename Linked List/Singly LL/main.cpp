@@ -30,6 +30,19 @@ struct LinkedList
         }
     }
 
+    // Element added at first
+    void push_front(string val)
+    {
+        Node *n = new Node(val);
+        if (!head)
+            head = tail = n;
+        else
+        {
+            n->next = head;
+            head = n;
+        }
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -50,6 +63,19 @@ struct LinkedList
 
 main()
 {
+    LinkedList list;
+    list.push_front("1");
+    list.push_front("2");
+    list.push_front("3");
+    list.push_front("4");
+    list.push_front("5");
+    list.push_front("6");
+    list.push_front("7");
+    list.push_front("8");
+    list.push_front("9");
+    list.push_front("10");
+
+    list.display_list();
 
     return 0;
 }
