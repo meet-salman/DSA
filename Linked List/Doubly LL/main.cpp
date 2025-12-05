@@ -76,6 +76,23 @@ struct LinkedList
         head->previous = nullptr;
         delete toDlt;
     }
+
+    // Traverse & Display all items
+    void display_ascending()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                cout << current->value << " ";
+                current = current->next;
+            }
+        }
+        cout << endl;
+    }
 };
 
 int main()
