@@ -163,13 +163,6 @@ struct LinkedList
             return;
         }
 
-        // pop_back() if last position
-        if (position == len - 1)
-        {
-            pop_back();
-            return;
-        }
-
         Node *current = head;
         Node *toDlt;
         int idx = 0;
@@ -261,7 +254,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_by_value("9");
+    list.pop_at_position(9);
 
     list.display_list();
 
