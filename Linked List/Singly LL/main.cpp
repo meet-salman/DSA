@@ -276,6 +276,33 @@ struct LinkedList
         current->value = editedValue;
     }
 
+    // Search element by value
+    void search_by_value(string key)
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        int idx = 0;
+
+        while (current && current->value != key)
+        {
+            idx++;
+            current = current->next;
+        }
+
+        if (current == nullptr)
+        {
+            cout << -1 << endl;
+            return;
+        }
+
+        cout << idx << endl;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -308,7 +335,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.update_at_position(5, "salman");
+    list.search_by_value("5");
 
     list.display_list();
 
