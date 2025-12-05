@@ -29,6 +29,23 @@ struct LinkedList
             tail = n;
         }
     }
+
+    // Traverse & Display all items
+    void display_list()
+    {
+        if (!head)
+            cout << "List is empty!" << endl;
+        else
+        {
+            Node *current = head;
+            while (current)
+            {
+                cout << current->value << " ";
+                current = current->next;
+            }
+        }
+        cout << endl;
+    }
 };
 
 main()
