@@ -380,6 +380,38 @@ struct LinkedList
             current = current->next;
         }
     }
+
+    // Sort list in ascending order
+    void bubble_sort()
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        else
+        {
+            bool isSwapped = false;
+            do
+            {
+                isSwapped = false;
+                Node *current = head;
+
+                while (current->next)
+                {
+                    Node *next = current->next;
+
+                    if (current->value > next->value)
+                    {
+                        swap(current->value, next->value);
+                        isSwapped = true;
+                    }
+                    current = current->next;
+                }
+            } while (isSwapped);
+        }
+    }
 };
 
 int main()
@@ -396,9 +428,7 @@ int main()
     list.push_back("9");
     list.push_back("10");
 
-    list.display_in_range(3, 8);
-
-    // list.display_list();
+    list.display_list();
 
     return 0;
 }
