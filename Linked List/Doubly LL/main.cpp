@@ -93,6 +93,24 @@ struct LinkedList
         }
         cout << endl;
     }
+
+    // Traverse in reverse & Display all items
+    void display_descending()
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *current = tail;
+        while (current)
+        {
+            cout << current->value << " ";
+            current = current->previous;
+        }
+        cout << endl;
+    }
 };
 
 int main()
