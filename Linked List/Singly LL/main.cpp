@@ -108,6 +108,7 @@ struct LinkedList
         {
             delete head;
             head = nullptr;
+            tail = nullptr;
             return;
         }
 
@@ -184,6 +185,50 @@ struct LinkedList
         delete toDlt;
     }
 
+    // Element remove from middle by value
+    void pop_by_value(string val)
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        Node *toDlt;
+
+        while (current)
+        {
+            // If value at head, delete & updating head
+            if (current->value == val && current == head)
+            {
+                pop_front();
+                return;
+            }
+
+            // If value at tail, delete & updating tail
+            if (current->next->value == val && current->next == tail)
+            {
+                toDlt = current->next;
+                current->next = nullptr;
+                tail = current;
+                delete toDlt;
+                return;
+            }
+
+            // If value at somewhere btw head & tail
+            if (current->next->value == val)
+            {
+                toDlt = current->next;
+                current->next = toDlt->next;
+                delete toDlt;
+                return;
+            }
+
+            current = current->next;
+        }
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -216,7 +261,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_at_position(5);
+    list.pop_by_value("9");
 
     list.display_list();
 
