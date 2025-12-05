@@ -95,6 +95,35 @@ struct LinkedList
         current->next = n;
     }
 
+    // Element remove from last
+    void pop_back()
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        if (head->next == nullptr)
+        {
+            delete head;
+            head = nullptr;
+            return;
+        }
+
+        Node *current = head;
+        Node *toDlt;
+
+        while (current->next->next != nullptr)
+            current = current->next;
+
+        toDlt = current->next;
+        current->next = nullptr;
+        tail = current;
+
+        delete toDlt;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -120,14 +149,14 @@ main()
     list.push_back("2");
     list.push_back("3");
     list.push_back("4");
-    // list.push_back("5");
+    list.push_back("5");
     list.push_back("6");
     list.push_back("7");
     list.push_back("8");
     list.push_back("9");
     list.push_back("10");
 
-    list.push_at_position(0, "5");
+    list.pop_back();
 
     list.display_list();
 
