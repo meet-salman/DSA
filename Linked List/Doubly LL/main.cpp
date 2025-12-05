@@ -31,9 +31,24 @@ struct LinkedList
         tail->next = n;
         tail = n;
     }
+
+    // Element added at first
+    void push_front(string val)
+    {
+        Node *n = new Node(val);
+        if (!head)
+        {
+            head = tail = n;
+            return;
+        }
+
+        n->next = head;
+        head->previous = n;
+        head = n;
+    }
 };
 
-main()
+int main()
 {
 
     return 0;
