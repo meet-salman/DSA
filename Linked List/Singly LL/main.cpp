@@ -225,6 +225,28 @@ struct LinkedList
             cout << "Value not found!" << endl;
     }
 
+    // Update element by value
+    void update_by_value(string toEdit, string editedValue)
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        while (current && current->value != toEdit)
+            current = current->next;
+
+        if (current == nullptr)
+        {
+            cout << "Value not found!" << endl;
+            return;
+        }
+
+        current->value = editedValue;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -257,7 +279,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_by_value("12");
+    list.update_by_value("5", "salman");
 
     list.display_list();
 
