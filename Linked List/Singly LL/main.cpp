@@ -276,6 +276,35 @@ struct LinkedList
         current->value = editedValue;
     }
 
+    // Search element at position
+    void search_at_position(int position)
+    {
+        int length = find_length();
+
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        if (position < 0 || position >= length)
+        {
+            cout << "Invalid Position!" << endl;
+            return;
+        }
+
+        Node *current = head;
+        int idx = 0;
+
+        while (current && idx != position)
+        {
+            idx++;
+            current = current->next;
+        }
+
+        cout << current->value << endl;
+    }
+
     // Search element by value
     void search_by_value(string key)
     {
@@ -335,7 +364,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.search_by_value("5");
+    list.search_at_position(5);
 
     list.display_list();
 
