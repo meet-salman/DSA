@@ -190,7 +190,7 @@ struct LinkedList
         Node *current = head;
         Node *toDlt;
 
-        while (current)
+        while (current->next)
         {
             // If value at head, delete & updating head
             if (current->value == val && current == head)
@@ -220,6 +220,9 @@ struct LinkedList
 
             current = current->next;
         }
+
+        if (current->next == nullptr)
+            cout << "Value not found!" << endl;
     }
 
     // Traverse & Display all items
@@ -254,7 +257,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_at_position(9);
+    list.pop_by_value("12");
 
     list.display_list();
 
