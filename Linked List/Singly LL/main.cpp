@@ -124,6 +124,20 @@ struct LinkedList
         delete toDlt;
     }
 
+    // Element remove at first
+    void pop_front()
+    {
+        if (!head)
+        {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node *toDlt = head;
+        head = head->next;
+        delete toDlt;
+    }
+
     // Traverse & Display all items
     void display_list()
     {
@@ -156,7 +170,7 @@ main()
     list.push_back("9");
     list.push_back("10");
 
-    list.pop_back();
+    list.pop_front();
 
     list.display_list();
 
