@@ -1,22 +1,22 @@
 #include "template.h"
 
-void solve()
+void add_link(vec_2d_pair_iint &graph)
 {
-    int nodes, edges;
-    cin >> nodes >> edges;
-    vec_int_2d adjList(nodes + 1);
-    vec_2d_pair_iint graph((nodes + 1));
+    int router, next, cost;
+    cin >> router >> next >> cost;
 
-    int u, v, w;
-    int i = edges;
-    while (i--)
-    {
-        cin >> u >> v >> w;
-        graph[u].push_back({v, w});
-        graph[v].push_back({u, w});
-    }
+    graph[router].push_back({next, cost});
+    graph[next].push_back({router, cost});
+}
 
-    for (int i = 1; i < edges; i++)
+void add_router(vec_2d_pair_iint &graph)
+{
+    graph.resize(graph.size() + 1);
+}
+
+void display_network(vec_2d_pair_iint &graph)
+{
+    for (int i = 1; i < graph.size(); i++)
     {
         cout << i << " -> ";
         for (auto node : graph[i])
@@ -24,6 +24,26 @@ void solve()
 
         cout << endl;
     }
+}
+
+void create_network()
+{
+    int nodes, edges;
+    cin >> nodes >> edges;
+    vec_2d_pair_iint graph((nodes + 1));
+
+    int router, next, cost;
+    int i = edges;
+    while (i--)
+    {
+        cin >> router >> next >> cost;
+        graph[router].push_back({next, cost});
+        graph[next].push_back({router, cost});
+    }
+
+    add_router(graph);
+    add_link(graph);
+    display_network(graph);
 }
 
 int main()
@@ -36,7 +56,7 @@ int main()
     int t = 1;
     // cin >> t;
     while (t--)
-        solve();
+        create_network();
 
     // ------------
     // Sample Input
@@ -47,6 +67,7 @@ int main()
     // 3 4 6
     // 2 5 2
     // 4 5 1
+    // 6 1 5
     // ------------
 
     return 0;
