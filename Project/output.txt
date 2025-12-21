@@ -2,7 +2,7 @@ Network established successsfully
 Network size: 0
 
 Network expanded successfully with 6 routers
-network size: 6 Routers, 0 Links
+network size: 6 Routers, 0 noOfLinks
 
 Router 0 & 2 linked successfully
 Router 0 & 1 linked successfully
@@ -11,7 +11,7 @@ Router 2 & 3 linked successfully
 Router 2 & 4 linked successfully
 Router 3 & 5 linked successfully
 Router 4 & 5 linked successfully
-network size: 6 Routers, 7 Links
+network size: 6 Routers, 7 noOfLinks
 
 0 -> {2, 5} {1, 3} 
 1 -> {0, 3} {3, 7} 
@@ -21,12 +21,12 @@ network size: 6 Routers, 7 Links
 5 -> {3, 8} {4, 2} 
 
 Network expanded successfully with 1 routers
-network size: 7 Routers, 7 Links
+network size: 7 Routers, 7 noOfLinks
 
 Router 6 & 2 linked successfully
 Router 5 & 6 linked successfully
 Router 1 & 4 linked successfully
-network size: 7 Routers, 10 Links
+network size: 7 Routers, 10 noOfLinks
 
 0 -> {2, 5} {1, 3} 
 1 -> {0, 3} {3, 7} {4, 1} 

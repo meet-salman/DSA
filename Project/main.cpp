@@ -4,22 +4,22 @@ class Network
 {
 private:
     string networkName;
-    int noOfRouters, links;
+    int noOfRouters, noOfLinks;
     vec_2d_pair_iint network;
 
 public:
     Network(string networkName)
     {
         this->noOfRouters = 0;
-        this->links = 0;
+        this->noOfLinks = 0;
         this->networkName = networkName;
         cout << "Network established successsfully\n";
         cout << "Network size: " << noOfRouters << endl;
     }
 
-    void network_size()
+    void print_network_size()
     {
-        cout << "network size: " << noOfRouters << " Routers, " << links << " Links" << endl;
+        cout << "network size: " << noOfRouters << " Routers, " << noOfLinks << " noOfLinks" << endl;
     }
 
     void add_routers()
@@ -30,10 +30,10 @@ public:
         network.resize(noOfRouters);
 
         cout << "\nNetwork expanded successfully with " << routers << " routers\n";
-        network_size();
+        print_network_size();
     }
 
-    void add_links()
+    void add_noOfLinks()
     {
         int edges;
         cin >> edges;
@@ -56,13 +56,26 @@ public:
                 continue;
             }
 
-            network[router].push_back({next, cost});
-            network[next].push_back({router, cost});
+            bool isAlready = false;
+            for (int i = 0; i < network[router].size(); i++)
+            {
+                if (network[router][i].first == next)
+                {
+                    isAlready = true;
+                    break;
+                }
+            }
 
-            cout << "Router " << router << " & " << next << " linked successfully\n";
-            links++;
+            if (!isAlready)
+            {
+                network[router].push_back({next, cost});
+                network[next].push_back({router, cost});
+
+                cout << "Router " << router << " & " << next << " linked successfully\n";
+                noOfLinks++;
+            }
         }
-        network_size();
+        print_network_size();
     }
 
     void display_network()
@@ -89,10 +102,10 @@ int main()
 
     Network n("CS Dept");
     n.add_routers();
-    n.add_links();
+    n.add_noOfLinks();
     n.display_network();
     n.add_routers();
-    n.add_links();
+    n.add_noOfLinks();
     n.display_network();
 
     // ------------
@@ -107,8 +120,9 @@ int main()
     // 3 5 8
     // 4 5 2
     // 1
-    // 3
+    // 4
     // 6 2 5
+    // 5 4 2 -> duplicate link
     // 5 6 7
     // 1 4 1
     // ------------
