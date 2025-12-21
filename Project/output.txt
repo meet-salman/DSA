@@ -1,5 +1,37 @@
-1 -> {2, 3} {3, 5} 
-2 -> {1, 3} {3, 4} {5, 2} 
-3 -> {1, 5} {2, 4} {4, 6} 
-4 -> {3, 6} {5, 1} 
-5 -> {2, 2} {4, 1} 
+Network established successsfully
+Network size: 0
+
+Network expanded successfully with 6 routers
+network size: 6 Routers, 0 Links
+
+Router 0 & 2 linked successfully
+Router 0 & 1 linked successfully
+Router 1 & 3 linked successfully
+Router 2 & 3 linked successfully
+Router 2 & 4 linked successfully
+Router 3 & 5 linked successfully
+Router 4 & 5 linked successfully
+network size: 6 Routers, 7 Links
+
+0 -> {2, 5} {1, 3} 
+1 -> {0, 3} {3, 7} 
+2 -> {0, 5} {3, 6} {4, 1} 
+3 -> {1, 7} {2, 6} {5, 8} 
+4 -> {2, 1} {5, 2} 
+5 -> {3, 8} {4, 2} 
+
+Network expanded successfully with 1 routers
+network size: 7 Routers, 7 Links
+
+Router 6 & 2 linked successfully
+Router 5 & 6 linked successfully
+Router 1 & 4 linked successfully
+network size: 7 Routers, 10 Links
+
+0 -> {2, 5} {1, 3} 
+1 -> {0, 3} {3, 7} {4, 1} 
+2 -> {0, 5} {3, 6} {4, 1} {6, 5} 
+3 -> {1, 7} {2, 6} {5, 8} 
+4 -> {2, 1} {5, 2} {1, 1} 
+5 -> {3, 8} {4, 2} {6, 7} 
+6 -> {2, 5} {5, 7} 
