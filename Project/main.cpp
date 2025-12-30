@@ -8,6 +8,7 @@ private:
     vec_2d_pair_iint network;
     vec_int_2d shortestdists;
     vector<vector<vector<int>>> allPaths;
+    bool isNetworkUpdated;
 
 public:
     Network(string networkName)
@@ -15,6 +16,7 @@ public:
         this->noOfRouters = 0;
         this->noOfLinks = 0;
         this->networkName = networkName;
+        this->isNetworkUpdated = false;
         cout << "Network established successsfully\n";
         cout << "Network size: " << noOfRouters << endl;
     }
@@ -35,7 +37,7 @@ public:
         print_network_size();
     }
 
-    void add_noOfLinks()
+    void add_links()
     {
         int edges;
         cin >> edges;
@@ -77,6 +79,9 @@ public:
                 noOfLinks++;
             }
         }
+        isNetworkUpdated = true;
+        if (isNetworkUpdated)
+            shortest_dists_calculation();
         print_network_size();
     }
 
@@ -96,6 +101,9 @@ public:
 
     void shortest_dists_calculation()
     {
+        shortestdists.clear();
+        allPaths.clear();
+
         for (int src = 0; src < noOfRouters; src++)
         {
             vec_bool explored(noOfRouters, false);
@@ -141,6 +149,9 @@ public:
 
             for (int dest = 0; dest < noOfRouters; dest++)
             {
+                if (dist[dest] == INT_MAX)
+                    continue; // no path exists
+
                 vector<int> path;
                 int current = dest;
 
@@ -205,14 +216,20 @@ int main()
 
     Network n("CS Dept");
     n.add_routers();
-    n.add_noOfLinks();
+    n.add_links();
     n.display_network();
     n.add_routers();
-    n.add_noOfLinks();
+    n.add_links();
     n.display_network();
     n.shortest_dists_calculation();
     n.display_shortest_dists();
+
+    n.add_links();
+    n.display_network();
+    n.display_shortest_dists();
+
     n.display_all_paths();
+    n.display_shortest_dists();
 
     // ------------
     // Sample Input
