@@ -8,6 +8,8 @@ private:
     vec_2d_pair_iint network;
     vec_int_2d shortestdists;
     vector<vector<vector<int>>> allPaths;
+
+public:
     bool isNetworkUpdated;
 
 public:
@@ -80,8 +82,6 @@ public:
             }
         }
         isNetworkUpdated = true;
-        if (isNetworkUpdated)
-            shortest_dists_calculation();
         print_network_size();
     }
 
@@ -221,15 +221,20 @@ int main()
     n.add_routers();
     n.add_links();
     n.display_network();
-    n.shortest_dists_calculation();
+
+    if (n.isNetworkUpdated)
+        n.shortest_dists_calculation();
+
     n.display_shortest_dists();
 
     n.add_links();
     n.display_network();
-    n.display_shortest_dists();
 
-    n.display_all_paths();
+    if (n.isNetworkUpdated)
+        n.shortest_dists_calculation();
+
     n.display_shortest_dists();
+    n.display_all_paths();
 
     // ------------
     // Sample Input
