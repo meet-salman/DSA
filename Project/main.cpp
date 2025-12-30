@@ -6,7 +6,8 @@ private:
     string networkName;
     int noOfRouters, noOfLinks;
     vec_2d_pair_iint network;
-    vec_int_2d shortestPaths;
+    vec_int_2d shortestdists;
+    vector<vector<vector<int>>> allPaths;
 
 public:
     Network(string networkName)
@@ -93,18 +94,19 @@ public:
         }
     }
 
-    void shortest_paths_calculation()
+    void shortest_dists_calculation()
     {
         for (int src = 0; src < noOfRouters; src++)
         {
             vec_bool explored(noOfRouters, false);
-            vec_int path(noOfRouters, INT_MAX);
-
-            path[src] = 0;
+            vec_int dist(noOfRouters, INT_MAX);
+            vec_int parent(noOfRouters, -1);
 
             priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
+            dist[src] = 0;
             pq.push({0, src});
+
             while (!pq.empty())
             {
                 int currentNode = pq.top().second;
@@ -121,42 +123,74 @@ public:
                 for (auto &edge : network[currentNode])
                 {
                     int neighbour = edge.first;
-                    int dist = edge.second;
-                    int newCost = cost + dist;
+                    int weight = edge.second;
+                    int newCost = cost + weight;
 
-                    if (!explored[neighbour] && newCost < path[neighbour])
+                    if (!explored[neighbour] && newCost < dist[neighbour])
                     {
-                        path[neighbour] = newCost;
+                        parent[neighbour] = currentNode;
+                        dist[neighbour] = newCost;
                         pq.push({newCost, neighbour});
                     }
                 }
-
-                // for (auto &x : explored)
-                // {
-                //     cout << x << " ";
-                // }
-                // cout << endl;
-                // for (auto &x : shortestPath)
-                // {
-                //     cout << x << " ";
-                // }
             }
-            shortestPaths.push_back(path);
+            shortestdists.push_back(dist);
+
+            // Storing all path from source
+            vector<vector<int>> distsFromSrc(noOfRouters);
+
+            for (int dest = 0; dest < noOfRouters; dest++)
+            {
+                vector<int> path;
+                int current = dest;
+
+                // stop when reached at source
+                while (current != -1)
+                {
+                    path.push_back(current);
+                    current = parent[current];
+                }
+
+                reverse(all(path));
+                distsFromSrc[dest] = path;
+            }
+            allPaths.push_back(distsFromSrc);
         }
     }
 
-    void display_shortest_paths()
+    void display_shortest_dists()
     {
-        cout << "\n------------------" << endl;
-        cout << "  SHORTEST PATHS  " << endl;
-        cout << "------------------" << endl;
-        for (int i = 0; i < shortestPaths.size(); i++)
+        cout << "\n--------------------" << endl;
+        cout << "  SHORTEST DISTANCES  " << endl;
+        cout << "----------------------" << endl;
+        for (int i = 0; i < shortestdists.size(); i++)
         {
             cout << "Router " << i << " -> ";
             // cout << i << " -> ";
-            for (auto node : shortestPaths[i])
+            for (auto node : shortestdists[i])
                 cout << node << " ";
 
+            cout << endl;
+        }
+    }
+
+    void display_all_paths()
+    {
+        cout << "\n------------------" << endl;
+        cout << "      ALL PATHS     " << endl;
+        cout << "--------------------" << endl;
+
+        for (int i = 0; i < allPaths.size(); i++)
+        {
+            for (int j = 0; j < allPaths[i].size(); j++)
+            {
+                cout << i << " -> " << j << ": { ";
+                for (int k = 0; k < allPaths[i][j].size(); k++)
+                {
+                    cout << allPaths[i][j][k] << " ";
+                }
+                cout << "}" << endl;
+            }
             cout << endl;
         }
     }
@@ -176,8 +210,9 @@ int main()
     n.add_routers();
     n.add_noOfLinks();
     n.display_network();
-    n.shortest_paths_calculation();
-    n.display_shortest_paths();
+    n.shortest_dists_calculation();
+    n.display_shortest_dists();
+    n.display_all_paths();
 
     // ------------
     // Sample Input
