@@ -6,6 +6,7 @@ private:
     string networkName;
     int noOfRouters, noOfLinks;
     vec_2d_pair_iint network;
+    vec_int_2d shortestPaths;
 
 public:
     Network(string networkName)
@@ -91,6 +92,74 @@ public:
             cout << endl;
         }
     }
+
+    void shortest_paths_calculation()
+    {
+        for (int src = 0; src < noOfRouters; src++)
+        {
+            vec_bool explored(noOfRouters, false);
+            vec_int path(noOfRouters, INT_MAX);
+
+            path[src] = 0;
+
+            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+            pq.push({0, src});
+            while (!pq.empty())
+            {
+                int currentNode = pq.top().second;
+                int cost = pq.top().first;
+                pq.pop();
+
+                // cout << currentNode << " " << cost << endl;
+
+                if (explored[currentNode])
+                    continue;
+
+                explored[currentNode] = true;
+
+                for (auto &edge : network[currentNode])
+                {
+                    int neighbour = edge.first;
+                    int dist = edge.second;
+                    int newCost = cost + dist;
+
+                    if (!explored[neighbour] && newCost < path[neighbour])
+                    {
+                        path[neighbour] = newCost;
+                        pq.push({newCost, neighbour});
+                    }
+                }
+
+                // for (auto &x : explored)
+                // {
+                //     cout << x << " ";
+                // }
+                // cout << endl;
+                // for (auto &x : shortestPath)
+                // {
+                //     cout << x << " ";
+                // }
+            }
+            shortestPaths.push_back(path);
+        }
+    }
+
+    void display_shortest_paths()
+    {
+        cout << "\n------------------" << endl;
+        cout << "  SHORTEST PATHS  " << endl;
+        cout << "------------------" << endl;
+        for (int i = 0; i < shortestPaths.size(); i++)
+        {
+            cout << "Router " << i << " -> ";
+            // cout << i << " -> ";
+            for (auto node : shortestPaths[i])
+                cout << node << " ";
+
+            cout << endl;
+        }
+    }
 };
 
 int main()
@@ -107,6 +176,8 @@ int main()
     n.add_routers();
     n.add_noOfLinks();
     n.display_network();
+    n.shortest_paths_calculation();
+    n.display_shortest_paths();
 
     // ------------
     // Sample Input
