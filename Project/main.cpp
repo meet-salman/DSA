@@ -19,40 +19,50 @@ public:
         this->noOfLinks = 0;
         this->networkName = networkName;
         this->isNetworkUpdated = false;
-        cout << "Network established successsfully\n";
-        cout << "Network size: " << noOfRouters << endl;
+        cout << "\n------------------------------------------\n";
+        cout << "     NETWORK ESTABLISHED SUCCESSSFULLY      \n";
+        cout << "------------------------------------------\n";
+        display_network_details();
     }
 
-    void print_network_size()
+    void display_network_details()
     {
-        cout << "network size: " << noOfRouters << " Routers, " << noOfLinks << " noOfLinks" << endl;
+        cout << "Network Name: " << networkName << endl
+             << "Routers in Network: " << noOfRouters << " Routers" << endl
+             << "Links in Network: " << noOfLinks << " Links" << endl;
     }
 
     void add_routers()
     {
         int routers;
+        cout << "\nNo of routers to add: ";
         cin >> routers;
         noOfRouters += routers;
         network.resize(noOfRouters);
 
         cout << "\nNetwork expanded successfully with " << routers << " routers\n";
-        print_network_size();
     }
 
     void add_links()
     {
         int edges;
+        cout << "\nNo of links to add: ";
         cin >> edges;
 
         cout << endl;
         while (edges--)
         {
             int router, next, cost;
-            cin >> router >> next >> cost;
+            cout << "Link router: ";
+            cin >> router;
+            cout << "to: ";
+            cin >> next;
+            cout << "with distance: ";
+            cin >> cost;
 
             if (router >= noOfRouters || router < 0 || next >= noOfRouters || next < 0)
             {
-                cout << router << "—" << next << " Out of network\n";
+                cout << router << "-" << next << " Out of network\n";
                 continue;
             }
 
@@ -77,12 +87,21 @@ public:
                 network[router].push_back({next, cost});
                 network[next].push_back({router, cost});
 
-                cout << "Router " << router << " & " << next << " linked successfully\n";
+                cout << "Linking router " << router << " & " << next;
+                for (int i = 0; i < 3; i++)
+                {
+                    cout << "." << flush;
+                    this_thread::sleep_for(chrono::seconds(1));
+                }
+
+                cout << "\rRouter " << router << " & " << next << " linked successfully\n";
+
                 noOfLinks++;
             }
         }
+        cout << "\rLinking completed!\n"
+             << endl;
         isNetworkUpdated = true;
-        print_network_size();
     }
 
     void display_network()
@@ -104,6 +123,10 @@ public:
         shortestdists.clear();
         allPaths.clear();
 
+        cout << "\n----------------------" << endl;
+        cout << "  SHORTEST DISTANCES  " << endl;
+        cout << "----------------------";
+
         for (int src = 0; src < noOfRouters; src++)
         {
             vec_bool explored(noOfRouters, false);
@@ -115,13 +138,12 @@ public:
             dist[src] = 0;
             pq.push({0, src});
 
+            cout << "\nRouter " << src << " calculating its shortest distances";
             while (!pq.empty())
             {
                 int currentNode = pq.top().second;
                 int cost = pq.top().first;
                 pq.pop();
-
-                // cout << currentNode << " " << cost << endl;
 
                 if (explored[currentNode])
                     continue;
@@ -142,6 +164,26 @@ public:
                     }
                 }
             }
+
+            // loading...
+            for (int i = 0; i < 2; i++)
+            {
+                cout << "." << flush;
+                this_thread::sleep_for(chrono::seconds(1));
+            }
+
+            // Displaying src shortest distances
+            cout << "\r" << string(80, ' ') << "\r";
+            cout << "Router " << src << " -> ";
+            for (auto n : dist)
+            {
+                if (n == INT_MAX)
+                    cout << "inf ";
+                else
+                    cout << n << " ";
+            }
+
+            // Add shortest distances of src to all paths
             shortestdists.push_back(dist);
 
             // Storing all path from source
@@ -171,7 +213,7 @@ public:
 
     void display_shortest_dists()
     {
-        cout << "\n--------------------" << endl;
+        cout << "\n----------------------" << endl;
         cout << "  SHORTEST DISTANCES  " << endl;
         cout << "----------------------" << endl;
         for (int i = 0; i < shortestdists.size(); i++)
@@ -185,56 +227,38 @@ public:
         }
     }
 
-    void display_all_paths()
+    void display_paths(int router)
     {
-        cout << "\n------------------" << endl;
-        cout << "      ALL PATHS     " << endl;
-        cout << "--------------------" << endl;
+        cout << "\n----------------------------------------" << endl;
+        cout << "   PATHS FROM ROUTER " << router << " TO ALL ROUTERS" << endl;
+        cout << "------------------------------------------" << endl;
 
-        for (int i = 0; i < allPaths.size(); i++)
+        for (int j = 0; j < allPaths[router].size(); j++)
         {
-            for (int j = 0; j < allPaths[i].size(); j++)
+            cout << router << " -> " << j << ": { ";
+            for (int k = 0; k < allPaths[router][j].size(); k++)
             {
-                cout << i << " -> " << j << ": { ";
-                for (int k = 0; k < allPaths[i][j].size(); k++)
-                {
-                    cout << allPaths[i][j][k] << " ";
-                }
-                cout << "}" << endl;
+                cout << allPaths[router][j][k] << " ";
             }
-            cout << endl;
+            cout << "}" << endl;
         }
+        cout << endl;
     }
 };
 
 int main()
 {
 
-    fast_io();
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // fast_io();
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
 
     Network n("CS Dept");
     n.add_routers();
     n.add_links();
-    n.display_network();
-    n.add_routers();
-    n.add_links();
-    n.display_network();
 
     if (n.isNetworkUpdated)
         n.shortest_dists_calculation();
-
-    n.display_shortest_dists();
-
-    n.add_links();
-    n.display_network();
-
-    if (n.isNetworkUpdated)
-        n.shortest_dists_calculation();
-
-    n.display_shortest_dists();
-    n.display_all_paths();
 
     // ------------
     // Sample Input
