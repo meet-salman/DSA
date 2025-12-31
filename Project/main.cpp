@@ -307,6 +307,53 @@ public:
         }
         cout << endl;
     }
+
+    void send_packet(int srcPc, int destPc)
+    {
+        cout << YELLOW << "\nPacket sending from PC " << srcPc << " to PC " << destPc << "..." << RESET << "\n";
+        loading();
+        clear_line();
+
+        int srcRouter = -1, destRouter = -1;
+        for (auto &pc : pcs)
+        {
+            if (pc.pcId == srcPc)
+                srcRouter = pc.routerConnected;
+            if (pc.pcId == destPc)
+                destRouter = pc.routerConnected;
+        }
+
+        if (srcRouter == -1 || destRouter == -1)
+        {
+            cout << RED << "Invalid PC ID(s)" << RESET << "\n";
+            return;
+        }
+
+        cout << GREEN << "Packet sending started" << RESET << "\n";
+        loading();
+        clear_line();
+        cout << "PC " << srcPc << " -> Router " << srcRouter << endl;
+
+        // Check if no route available
+        if (allPaths[srcRouter][destRouter].empty())
+        {
+            cout << RED << "No route available" << RESET << "\n";
+            return;
+        }
+
+        // sending on routers
+        int next = srcRouter;
+        while (next != destRouter)
+        {
+            cout << "Packet at router " << next << endl;
+            next = allPaths[next][destRouter][1];
+
+            loading();
+            clear_line();
+        }
+        cout << "Router " << destRouter << " -> PC " << destPc << endl;
+        cout << BLUE << "Packet delivered successfully!" << RESET << "\n";
+    }
 };
 
 int main()
@@ -324,6 +371,8 @@ int main()
 
     n.add_pc(1, 2);
     n.add_pc(2, 5);
+
+    n.send_packet(1, 2);
 
     // ------------
     // Sample Input
