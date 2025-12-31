@@ -1,5 +1,20 @@
 #include "template.h"
 
+// loading...
+void loading()
+{
+    for (int i = 0; i < 2; i++)
+    {
+        cout << "." << flush;
+        this_thread::sleep_for(chrono::milliseconds(100));
+    }
+}
+
+void clear_line()
+{
+    cout << "\r" << string(80, ' ') << "\r";
+}
+
 class Network
 {
 private:
@@ -19,9 +34,13 @@ public:
         this->noOfLinks = 0;
         this->networkName = networkName;
         this->isNetworkUpdated = false;
-        cout << "\n------------------------------------------\n";
-        cout << "     NETWORK ESTABLISHED SUCCESSSFULLY      \n";
-        cout << "------------------------------------------\n";
+        cout << BG_BLUE << WHITE << BOLD
+             << "------------------------------------------" << RESET << "\n";
+        cout << BG_BLUE << WHITE << BOLD
+             << "     NETWORK ESTABLISHED SUCCESSFULLY     " << RESET << "\n";
+        cout << BG_BLUE << WHITE << BOLD
+             << "------------------------------------------" << RESET << "\n";
+
         display_network_details();
     }
 
@@ -35,21 +54,23 @@ public:
     void add_routers()
     {
         int routers;
-        cout << "\nNo of routers to add: ";
+        cout << BRIGHT_BLACK << "\nNo of routers to add: " << RESET;
         cin >> routers;
         noOfRouters += routers;
         network.resize(noOfRouters);
 
-        cout << "\nNetwork expanded successfully with " << routers << " routers\n";
+        cout << BLUE
+             << "Network expanded successfully with "
+             << routers << " routers\n"
+             << RESET;
     }
 
     void add_links()
     {
         int edges;
-        cout << "\nNo of links to add: ";
+        cout << BRIGHT_BLACK << "\nNo of links to add: " << RESET;
         cin >> edges;
 
-        cout << endl;
         while (edges--)
         {
             int router, next, cost;
@@ -62,13 +83,15 @@ public:
 
             if (router >= noOfRouters || router < 0 || next >= noOfRouters || next < 0)
             {
-                cout << router << "-" << next << " Out of network\n";
+                cout << RED << router << "-" << next
+                     << " Out of network" << RESET << endl;
                 continue;
             }
 
             if (cost < 0)
             {
-                cout << "Invalid cost at: " << router << "—" << next << endl;
+                cout << RED << "Invalid cost at: "
+                     << router << "—" << next << RESET << endl;
                 continue;
             }
 
@@ -87,15 +110,14 @@ public:
                 network[router].push_back({next, cost});
                 network[next].push_back({router, cost});
 
-                cout << "Linking router " << router << " & " << next;
-                for (int i = 0; i < 3; i++)
-                {
-                    cout << "." << flush;
-                    this_thread::sleep_for(chrono::seconds(1));
-                }
-
-                cout << "\rRouter " << router << " & " << next << " linked successfully\n";
-
+                // Showing progress
+                cout << YELLOW << "Linking router "
+                     << router << " & " << next << RESET;
+                loading();
+                clear_line();
+                cout << GREEN
+                     << "Router " << router << " & " << next
+                     << " linked successfully" << RESET << endl;
                 noOfLinks++;
             }
         }
@@ -106,26 +128,34 @@ public:
 
     void display_network()
     {
-        cout << endl;
+        cout << BG_WHITE << BLUE << BOLD
+             << "             NETWORK TOPOLOGY             " << RESET << "\n";
+
+        // Display routers and connections
         for (int i = 0; i < noOfRouters; i++)
         {
-            // cout <<"Router " <<i << " -> ";
-            cout << i << " -> ";
+            cout << CYAN << "Router " << i << RESET << " -> ";
+
             for (auto node : network[i])
-                cout << "{" << node.first << ", " << node.second << "} ";
+                cout << GREEN << "{" << node.first << ", " << node.second << "} " << RESET;
 
             cout << endl;
         }
+
+        cout << endl;
     }
 
-    void shortest_dists_calculation()
+    void shortest_distance_calculation()
     {
         shortestdists.clear();
         allPaths.clear();
 
-        cout << "\n----------------------" << endl;
-        cout << "  SHORTEST DISTANCES  " << endl;
-        cout << "----------------------";
+        cout << BG_WHITE << BLUE << BOLD
+             << "------------------------------------------" << RESET << "\n";
+        cout << BG_WHITE << BLUE << BOLD
+             << "            SHORTEST DISTANCES            " << RESET << "\n";
+        cout << BG_WHITE << BLUE << BOLD
+             << "------------------------------------------" << RESET;
 
         for (int src = 0; src < noOfRouters; src++)
         {
@@ -138,7 +168,9 @@ public:
             dist[src] = 0;
             pq.push({0, src});
 
-            cout << "\nRouter " << src << " calculating its shortest distances";
+            cout << YELLOW
+                 << "\nRouter " << src << " calculating its shortest distances"
+                 << RESET;
             while (!pq.empty())
             {
                 int currentNode = pq.top().second;
@@ -165,26 +197,14 @@ public:
                 }
             }
 
-            // loading...
-            for (int i = 0; i < 2; i++)
-            {
-                cout << "." << flush;
-                this_thread::sleep_for(chrono::seconds(1));
-            }
-
-            // Displaying src shortest distances
-            cout << "\r" << string(80, ' ') << "\r";
-            cout << "Router " << src << " -> ";
-            for (auto n : dist)
-            {
-                if (n == INT_MAX)
-                    cout << "inf ";
-                else
-                    cout << n << " ";
-            }
+            loading();
 
             // Add shortest distances of src to all paths
             shortestdists.push_back(dist);
+
+            // Displaying src shortest distances
+            clear_line();
+            display_node_shortest_distance(src);
 
             // Storing all path from source
             vector<vector<int>> distsFromSrc(noOfRouters);
@@ -211,19 +231,35 @@ public:
         }
     }
 
-    void display_shortest_dists()
+    void display_node_shortest_distance(int src)
     {
-        cout << "\n----------------------" << endl;
-        cout << "  SHORTEST DISTANCES  " << endl;
-        cout << "----------------------" << endl;
+        cout << CYAN << "Router " << src << RESET << " -> ";
+        for (auto node : shortestdists[src])
+        {
+            if (node == INT_MAX)
+                cout << RED << "inf " << RESET;
+            else
+                cout << node << " ";
+        }
+    }
+
+    void display_all_nodes_shortest_distances()
+    {
+        cout << BG_WHITE << BLUE << BOLD
+             << "------------------------------------------" << RESET << "\n";
+        cout << BG_WHITE << BLUE << BOLD
+             << "            SHORTEST DISTANCES            " << RESET << "\n";
+        cout << BG_WHITE << BLUE << BOLD
+             << "------------------------------------------" << RESET;
+
         for (int i = 0; i < shortestdists.size(); i++)
         {
-            cout << "Router " << i << " -> ";
+            cout << "\nRouter " << i << " -> ";
             // cout << i << " -> ";
             for (auto node : shortestdists[i])
                 cout << node << " ";
 
-            cout << endl;
+            // cout << endl;
         }
     }
 
@@ -248,17 +284,18 @@ public:
 
 int main()
 {
-
-    // fast_io();
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-
     Network n("CS Dept");
     n.add_routers();
     n.add_links();
+    n.display_network();
 
     if (n.isNetworkUpdated)
-        n.shortest_dists_calculation();
+        n.shortest_distance_calculation();
+
+    // n.display_shortest_dists();
+
+    // n.display_shortest_dists();
+    // n.display_paths(2);
 
     // ------------
     // Sample Input
