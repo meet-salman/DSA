@@ -6,7 +6,7 @@ void loading()
     for (int i = 0; i < 2; i++)
     {
         cout << "." << flush;
-        this_thread::sleep_for(chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(800));
     }
 }
 
@@ -17,14 +17,14 @@ void clear_line()
 
 class PC
 {
-private:
+public:
     int pcId;
     int routerConnected;
 
 public:
     PC(int id, int router) : pcId(id), routerConnected(router)
     {
-        cout << "PC " << id << " connected with router " << routerConnected << endl;
+        cout << BLUE << "PC " << id << " connected with router " << routerConnected << RESET << "\n";
     }
 };
 
@@ -36,6 +36,7 @@ private:
     vec_2d_pair_iint network;
     vec_int_2d shortestdists;
     vector<vector<vector<int>>> allPaths;
+    vector<PC> pcs;
 
 public:
     bool isNetworkUpdated;
@@ -134,12 +135,20 @@ public:
                 noOfLinks++;
             }
         }
-        cout << "\rLinking completed!\n"
-             << endl;
+        cout << BLUE << "\rLinking completed!" << RESET << "\n\n";
         isNetworkUpdated = true;
     }
 
-    void display_network()
+    void add_pc(int id, int router)
+    {
+        cout << YELLOW << "\nConnecting PC " << id << " with router " << router << "...\n"
+             << RESET;
+        loading();
+        clear_line();
+        pcs.push_back(PC(id, router));
+    }
+
+    void display_network_topology()
     {
         cout << BG_WHITE << BLUE << BOLD
              << "             NETWORK TOPOLOGY             " << RESET << "\n";
@@ -158,17 +167,18 @@ public:
         cout << endl;
     }
 
-    void shortest_dists_calculation()
+    void shortest_distance_calculation()
     {
         shortestdists.clear();
         allPaths.clear();
 
-        cout << BG_WHITE << BLUE << BOLD
-             << "------------------------------------------" << RESET << "\n";
-        cout << BG_WHITE << BLUE << BOLD
-             << "            SHORTEST DISTANCES            " << RESET << "\n";
-        cout << BG_WHITE << BLUE << BOLD
-             << "------------------------------------------" << RESET;
+        cout << YELLOW << "Calculating shortest distances..." << RESET << "\n";
+        // cout << BG_WHITE << BLUE << BOLD
+        //      << "------------------------------------------" << RESET << "\n";
+        // cout << BG_WHITE << BLUE << BOLD
+        //      << "            SHORTEST DISTANCES            " << RESET << "\n";
+        // cout << BG_WHITE << BLUE << BOLD
+        //      << "------------------------------------------" << RESET;
 
         for (int src = 0; src < noOfRouters; src++)
         {
@@ -182,7 +192,7 @@ public:
             pq.push({0, src});
 
             cout << YELLOW
-                 << "\nRouter " << src << " calculating its shortest distances"
+                 << "Router " << src << " calculating its shortest distances"
                  << RESET;
             while (!pq.empty())
             {
@@ -217,7 +227,7 @@ public:
 
             // Displaying src shortest distances
             clear_line();
-            display_node_shortest_distance(src);
+            // display_node_shortest_distance(src);
 
             // Storing all path from source
             vector<vector<int>> distsFromSrc(noOfRouters);
@@ -242,6 +252,7 @@ public:
             }
             allPaths.push_back(distsFromSrc);
         }
+        cout << BLUE << "Shortest distances calculated!" << RESET << "\n";
     }
 
     void display_node_shortest_distance(int src)
@@ -263,20 +274,23 @@ public:
         cout << BG_WHITE << BLUE << BOLD
              << "            SHORTEST DISTANCES            " << RESET << "\n";
         cout << BG_WHITE << BLUE << BOLD
-             << "------------------------------------------" << RESET;
+             << "------------------------------------------" << RESET << "\n";
 
         for (int i = 0; i < shortestdists.size(); i++)
         {
-            cout << "\nRouter " << i << " -> ";
-            // cout << i << " -> ";
+            cout << CYAN << "Router " << i << RESET << " -> ";
             for (auto node : shortestdists[i])
-                cout << node << " ";
-
-            // cout << endl;
+            {
+                if (node == INT_MAX)
+                    cout << RED << "inf " << RESET;
+                else
+                    cout << node << " ";
+            }
+            cout << endl;
         }
     }
 
-    void display_paths(int router)
+    void display_shortest_paths(int router)
     {
         cout << "\n----------------------------------------" << endl;
         cout << "   PATHS FROM ROUTER " << router << " TO ALL ROUTERS" << endl;
@@ -297,21 +311,19 @@ public:
 
 int main()
 {
-
-    // fast_io();
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-
     Network n("CS Dept");
     n.add_routers();
     n.add_links();
-    n.display_network();
+    n.display_network_topology();
 
     if (n.isNetworkUpdated)
-        n.shortest_dists_calculation();
+        n.shortest_distance_calculation();
 
-    // n.display_shortest_dists();
-    // n.display_paths(2);
+    // n.display_all_nodes_shortest_distances();
+    // n.display_shortest_paths(4);
+
+    n.add_pc(1, 2);
+    n.add_pc(2, 5);
 
     // ------------
     // Sample Input
