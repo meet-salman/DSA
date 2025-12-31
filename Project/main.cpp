@@ -15,6 +15,19 @@ void clear_line()
     cout << "\r" << string(80, ' ') << "\r";
 }
 
+class PC
+{
+private:
+    int pcId;
+    int routerConnected;
+
+public:
+    PC(int id, int router) : pcId(id), routerConnected(router)
+    {
+        cout << "PC " << id << " connected with router " << routerConnected << endl;
+    }
+};
+
 class Network
 {
 private:
@@ -145,7 +158,7 @@ public:
         cout << endl;
     }
 
-    void shortest_distance_calculation()
+    void shortest_dists_calculation()
     {
         shortestdists.clear();
         allPaths.clear();
@@ -284,15 +297,18 @@ public:
 
 int main()
 {
+
+    // fast_io();
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+
     Network n("CS Dept");
     n.add_routers();
     n.add_links();
     n.display_network();
 
     if (n.isNetworkUpdated)
-        n.shortest_distance_calculation();
-
-    // n.display_shortest_dists();
+        n.shortest_dists_calculation();
 
     // n.display_shortest_dists();
     // n.display_paths(2);

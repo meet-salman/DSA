@@ -3,6 +3,7 @@ using namespace std;
 using namespace chrono;
 
 #define LOCAL
+
 // ANSI color codes
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
