@@ -6,7 +6,7 @@ void loading()
     for (int i = 0; i < 2; i++)
     {
         cout << "." << flush;
-        this_thread::sleep_for(chrono::milliseconds(800));
+        this_thread::sleep_for(chrono::milliseconds(500));
     }
 }
 
@@ -334,8 +334,9 @@ public:
         clear_line();
         cout << "PC " << srcPc << " -> Router " << srcRouter << endl;
 
+        vector<int> &path = allPaths[srcRouter][destRouter];
         // Check if no route available
-        if (allPaths[srcRouter][destRouter].empty())
+        if (path.empty())
         {
             cout << RED << "No route available" << RESET << "\n";
             return;
@@ -343,14 +344,13 @@ public:
 
         // sending on routers
         int next = srcRouter;
-        while (next != destRouter)
+        for (auto &node : path)
         {
-            cout << "Packet at router " << next << endl;
-            next = allPaths[next][destRouter][1];
-
+            cout << "Packet at router " << node << endl;
             loading();
             clear_line();
         }
+
         cout << "Router " << destRouter << " -> PC " << destPc << endl;
         cout << BLUE << "Packet delivered successfully!" << RESET << "\n";
     }
@@ -359,20 +359,80 @@ public:
 int main()
 {
     Network n("CS Dept");
-    n.add_routers();
-    n.add_links();
-    n.display_network_topology();
 
-    if (n.isNetworkUpdated)
-        n.shortest_distance_calculation();
+    int choice;
 
-    // n.display_all_nodes_shortest_distances();
-    // n.display_shortest_paths(4);
+    do
+    {
+        cout << "\n=========== NETWORK MENU ===========\n";
+        cout << "1. Add Routers\n";
+        cout << "2. Add Links\n";
+        cout << "3. Display Network Topology\n";
+        cout << "4. Calculate Shortest Distances\n";
+        cout << "5. Add PC\n";
+        cout << "6. Send Packet\n";
+        cout << "7. Display All Nodes Shortest Distances\n";
+        cout << "8. Display Shortest Paths from a Router\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    n.add_pc(1, 2);
-    n.add_pc(2, 5);
+        switch (choice)
+        {
+        case 1:
+            n.add_routers();
+            break;
+        case 2:
+            n.add_links();
+            break;
+        case 3:
+            n.display_network_topology();
+            break;
+        case 4:
+            if (n.isNetworkUpdated)
+                n.shortest_distance_calculation();
+            else
+                cout << "Please add links first!\n";
+            break;
+        case 5:
+        {
+            int pcId, router;
+            cout << "Enter PC ID: ";
+            cin >> pcId;
+            cout << "Enter Router to connect: ";
+            cin >> router;
+            n.add_pc(pcId, router);
+            break;
+        }
+        case 6:
+        {
+            int srcPc, destPc;
+            cout << "Enter Source PC ID: ";
+            cin >> srcPc;
+            cout << "Enter Destination PC ID: ";
+            cin >> destPc;
+            n.send_packet(srcPc, destPc);
+            break;
+        }
+        case 7:
+            n.display_all_nodes_shortest_distances();
+            break;
+        case 8:
+        {
+            int router;
+            cout << "Enter Router ID: ";
+            cin >> router;
+            n.display_shortest_paths(router);
+            break;
+        }
+        case 0:
+            cout << "Exiting...\n";
+            break;
+        default:
+            cout << "Invalid choice! Try again.\n";
+        }
 
-    n.send_packet(1, 2);
+    } while (choice != 0);
 
     // ------------
     // Sample Input
