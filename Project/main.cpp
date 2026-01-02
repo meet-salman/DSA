@@ -6,13 +6,20 @@ void loading()
     for (int i = 0; i < 2; i++)
     {
         cout << "." << flush;
-        this_thread::sleep_for(chrono::milliseconds(500));
+        this_thread::sleep_for(chrono::milliseconds(10));
     }
 }
 
 void clear_line()
 {
-    cout << "\r" << string(80, ' ') << "\r";
+    // Clear current line
+    cout << "\033[2K\r";
+}
+
+void clear_prev_line()
+{
+    // Move cursor up one line and clear it
+    cout << "\033[A\033[2K\r";
 }
 
 class PC
@@ -68,7 +75,7 @@ public:
     void add_routers()
     {
         int routers;
-        cout << BRIGHT_BLACK << "\nNo of routers to add: " << RESET;
+        cout << "No of routers to add: ";
         cin >> routers;
         noOfRouters += routers;
         network.resize(noOfRouters);
@@ -82,7 +89,7 @@ public:
     void add_links()
     {
         int edges;
-        cout << BRIGHT_BLACK << "\nNo of links to add: " << RESET;
+        cout << "No of links to add: ";
         cin >> edges;
 
         while (edges--)
@@ -141,11 +148,74 @@ public:
 
     void add_pc(int id, int router)
     {
-        cout << YELLOW << "\nConnecting PC " << id << " with router " << router << "...\n"
+        cout << YELLOW << "Connecting PC " << id << " with router " << router << "...\n"
              << RESET;
         loading();
-        clear_line();
+        clear_prev_line();
         pcs.push_back(PC(id, router));
+    }
+
+    void display_network_table()
+    {
+        cout << BG_WHITE << BLUE << BOLD
+             << "             NETWORK TOPOLOGY             "
+             << RESET << "\n\n";
+
+        cout << BOLD
+             << BLUE << left << setw(10) << "Router"
+             << GREEN << setw(20) << "Connected Router"
+             << RED << setw(10) << "Cost"
+             << RESET << "\n";
+
+        cout << BOLD << CYAN
+             << "------------------------------------------"
+             << RESET << "\n";
+
+        for (int i = 0; i < noOfRouters; i++)
+        {
+            for (auto link : network[i])
+            {
+                cout << BLUE << left << setw(10) << i
+                     << GREEN << setw(20) << link.first
+                     << RED << setw(10) << link.second
+                     << RESET << "\n";
+            }
+        }
+
+        cout << BOLD << CYAN
+             << "------------------------------------------"
+             << RESET << "\n";
+    }
+
+    void display_network_adj_list()
+    {
+        cout << BG_WHITE << BLUE << BOLD
+             << "             NETWORK TOPOLOGY             "
+             << RESET << "\n";
+
+        cout << BOLD << CYAN
+             << "------------------------------------------"
+             << RESET << "\n";
+
+        for (int i = 0; i < noOfRouters; i++)
+        {
+            cout << BOLD << BLUE
+                 << "Router " << i << ":"
+                 << RESET << "\n";
+
+            for (auto link : network[i])
+            {
+                cout << GREEN << "  -> Router " << link.first
+                     << RED << " (Cost: " << link.second << ")"
+                     << RESET << "\n";
+            }
+
+            cout << "\n";
+        }
+
+        cout << BOLD << CYAN
+             << "------------------------------------------"
+             << RESET << "\n";
     }
 
     void display_network_topology()
@@ -153,18 +223,15 @@ public:
         cout << BG_WHITE << BLUE << BOLD
              << "             NETWORK TOPOLOGY             " << RESET << "\n";
 
-        // Display routers and connections
         for (int i = 0; i < noOfRouters; i++)
         {
             cout << CYAN << "Router " << i << RESET << " -> ";
 
-            for (auto node : network[i])
-                cout << GREEN << "{" << node.first << ", " << node.second << "} " << RESET;
+            for (auto link : network[i])
+                cout << GREEN << "{" << link.first << ", " << link.second << "} " << RESET;
 
             cout << endl;
         }
-
-        cout << endl;
     }
 
     void shortest_distance_calculation()
@@ -226,7 +293,9 @@ public:
             shortestdists.push_back(dist);
 
             // Displaying src shortest distances
-            clear_line();
+            cout << YELLOW
+                 << "\nRouter " << src << " constructing its shortest paths"
+                 << RESET;
             // display_node_shortest_distance(src);
 
             // Storing all path from source
@@ -251,8 +320,14 @@ public:
                 distsFromSrc[dest] = path;
             }
             allPaths.push_back(distsFromSrc);
+
+            loading();
+            clear_line();
+            clear_prev_line();
         }
+        clear_prev_line();
         cout << BLUE << "Shortest distances calculated!" << RESET << "\n";
+        isNetworkUpdated = false;
     }
 
     void display_node_shortest_distance(int src)
@@ -376,6 +451,7 @@ int main()
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
+        cout << endl;
 
         switch (choice)
         {
@@ -392,7 +468,7 @@ int main()
             if (n.isNetworkUpdated)
                 n.shortest_distance_calculation();
             else
-                cout << "Please add links first!\n";
+                cout << "No changes in network!\n";
             break;
         case 5:
         {
@@ -423,6 +499,16 @@ int main()
             cout << "Enter Router ID: ";
             cin >> router;
             n.display_shortest_paths(router);
+            break;
+        }
+        case 9:
+        {
+            n.display_network_table();
+            break;
+        }
+        case 10:
+        {
+            n.display_network_adj_list();
             break;
         }
         case 0:
