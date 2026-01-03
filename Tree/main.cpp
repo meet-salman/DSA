@@ -1,4 +1,5 @@
-#include "template.h"
+#include <bits/stdc++.h>
+using namespace std;
 
 struct Node
 {
@@ -9,7 +10,7 @@ struct Node
     Node(int val) : val(val), left(nullptr), right(nullptr) {}
 };
 
-Node *create_node()
+Node *binary_tree()
 {
     int val;
     cin >> val;
@@ -36,10 +37,22 @@ void pre_order_traversal(Node *node)
     pre_order_traversal(node->right);
 }
 
+void in_order_traversal(Node *node)
+{
+    if (node == nullptr)
+        return;
+
+    // Left Node Right
+    in_order_traversal(node->left);
+    cout << node->val << " -> ";
+    in_order_traversal(node->right);
+}
+
 void solve()
 {
-    Node *root = create_node();
+    Node *root = binary_tree();
     pre_order_traversal(root);
+    in_order_traversal(root);
 }
 
 int main()
