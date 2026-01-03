@@ -436,6 +436,7 @@ int main()
     Network n("CS Dept");
 
     int choice;
+
     do
     {
         cout << "\n=========== NETWORK MENU ===========\n";
@@ -467,7 +468,7 @@ int main()
             if (n.isNetworkUpdated)
                 n.shortest_distance_calculation();
             else
-                cout << "network is not updated!\n";
+                cout << "No changes in network!\n";
             break;
         case 5:
         {
