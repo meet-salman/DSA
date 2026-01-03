@@ -20,8 +20,8 @@ Node *binary_tree()
     if (val == -1)
         return nullptr;
 
-    temp->left = create_node();
-    temp->right = create_node();
+    temp->left = binary_tree();
+    temp->right = binary_tree();
 
     return temp;
 }
@@ -48,11 +48,23 @@ void in_order_traversal(Node *node)
     in_order_traversal(node->right);
 }
 
+void post_order_traversal(Node *node)
+{
+    if (node == nullptr)
+        return;
+
+    // Left Right Node
+    post_order_traversal(node->left);
+    post_order_traversal(node->right);
+    cout << node->val << " -> ";
+}
+
 void solve()
 {
     Node *root = binary_tree();
     pre_order_traversal(root);
     in_order_traversal(root);
+    post_order_traversal(root);
 }
 
 int main()
